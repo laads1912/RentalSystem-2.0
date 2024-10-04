@@ -6,23 +6,23 @@ class App(ctk.CTk):
     def __init__(self, back_to_login_callback):
         super().__init__()
 
-        self.controller = UserController()  # Controlador para manipular o BD
+        self.controller = UserController() 
         self.back_to_login_callback = back_to_login_callback
 
         self.title("RENTAL SYSTEM")
         self.geometry("800x600")
 
-        # Fundo branco
+        
         background_frame = ctk.CTkFrame(self, corner_radius=0, fg_color='white')
         background_frame.place(relwidth=1, relheight=1)
 
-        # Header
+        
         header_frame = ctk.CTkFrame(background_frame, height=50, fg_color='#81c9d8', corner_radius=0)
         header_frame.pack(fill='x')
         header_label = ctk.CTkLabel(header_frame, text="RENTAL SYSTEM", font=('Poppins Medium', 18, 'bold'), text_color="#535353")
         header_label.pack(side='left', padx=10)
 
-        # Frame de Cadastro
+        
         cadastro_frame = ctk.CTkFrame(background_frame, corner_radius=10, fg_color="white")
         cadastro_frame.pack(pady=20)
         cadastro_frame.place(relx=0.5, rely=0.5, anchor='center')
@@ -30,7 +30,7 @@ class App(ctk.CTk):
         cadastro_label = ctk.CTkLabel(cadastro_frame, text="Cadastro", font=('Poppins Medium', 30, 'bold'), text_color='#8f8e8e')
         cadastro_label.grid(row=0, column=0, columnspan=2, pady=10)
 
-        # Campos de Cadastro
+        
         self.entry_email = ctk.CTkEntry(cadastro_frame, placeholder_text="Email", width=220, fg_color='lightgray', border_width=0)
         self.entry_email.grid(row=1, column=0, pady=(10, 10))
 
@@ -58,16 +58,16 @@ class App(ctk.CTk):
         self.entry_confirm_password = ctk.CTkEntry(cadastro_frame, placeholder_text="Confirmar Senha", show='*', width=220, fg_color='lightgray', border_width=0)
         self.entry_confirm_password.grid(row=9, column=0, pady=(10, 10))
 
-        # Botão de Cadastro
+        
         button_register = ctk.CTkButton(cadastro_frame, text="Criar Conta", font=('Poppins Bold', 13, 'bold'), fg_color='#4094a5', command=self.register_user)
         button_register.grid(row=10, column=0, pady=10)
 
-        # Botão Voltar ao Login
+       
         button_back_to_login = ctk.CTkButton(cadastro_frame, text="Voltar ao Login", font=('Poppins Bold', 13, 'bold'), fg_color='#4094a5', command=self.back_to_login)
         button_back_to_login.grid(row=11, column=0, pady=10)
 
     def register_user(self):
-        # Coleta os dados do formulário
+        
         email = self.entry_email.get()
         full_name = self.entry_name.get()
         age = self.entry_age.get()
@@ -78,7 +78,7 @@ class App(ctk.CTk):
         password = self.entry_password.get()
         confirm_password = self.entry_confirm_password.get()
 
-        # Validação simples
+        
         if not email or not full_name or not age or not gender or not height or not weight or not shoe_size or not password or not confirm_password:
             messagebox.showerror("Erro", "Todos os campos são obrigatórios.")
             return
@@ -91,7 +91,7 @@ class App(ctk.CTk):
             messagebox.showerror("Erro", "As senhas não coincidem.")
             return
 
-        # Envia os dados para o controlador (salva no banco de dados)
+        
         try:
             self.controller.add_user(email, full_name, int(age), gender, int(height), int(weight), int(shoe_size), password)
             messagebox.showinfo("Sucesso", "Usuário cadastrado com sucesso!")
