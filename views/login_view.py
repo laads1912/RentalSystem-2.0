@@ -38,7 +38,7 @@ class LoginView:
 
         create_account_label = ctk.CTkLabel(self.login_frame, text="Create new account", font=('Telegraf', 10, 'bold'), text_color="#4094a5")
         create_account_label.grid(row=5, column=0, pady=10)
-        create_account_label.bind("<Button-1>")
+        create_account_label.bind("<Button-1>", self.open_registration)
 
         sign_in_button = ctk.CTkButton(self.login_frame, text="Sign In", font=('Poppins Bols', 13, 'bold'), fg_color='#4094a5', command=self.login)
         sign_in_button.grid(row=6, column=0, pady=10)
@@ -47,6 +47,9 @@ class LoginView:
         email = self.email_entry.get()
         password = self.password_entry.get()
         self.controller.handle_login(email, password)
+
+    def open_registration(self, event):
+        self.controller.handle_open_registration()
 
     def show_message(self, title, message):
         messagebox.showinfo(title, message)
