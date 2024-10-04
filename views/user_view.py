@@ -6,7 +6,7 @@ class UserView:
         self.controller = controller
         self.root = ctk.CTk()
         self.root.title("RENTAL SYSTEM - Create Account")
-        self.root.geometry("800x600")
+        self.root.geometry("1000x700")
 
         background_frame = ctk.CTkFrame(self.root, corner_radius=0, fg_color='white')
         background_frame.place(relwidth=1, relheight=1)
