@@ -4,6 +4,7 @@ import bcrypt
 from models.User import User
 from views.LoginView import LoginView
 from controllers.RegistrationController import RegistrationController
+from views.RoleSelectionView import RoleSelectionView
 
 class LoginController:
     def __init__(self):
@@ -15,8 +16,11 @@ class LoginController:
         cursor.execute("SELECT * FROM users WHERE email = ?", (email,))
         user = cursor.fetchone()
         if user and bcrypt.checkpw(password.encode(), user[9]):
-            self.view.show_message("Login Successful", f"Welcome, {email}!")
-            #aqui vai chamar o controller da página inicial ao invés de mostrar uma mensagem
+            self.view.root.withdraw()
+            if user[8] == 1:
+                RoleSelectionView(self).mainloop()
+            else:
+                self.guest_page()
         else:
             self.view.show_message("Login Failed", "Invalid email or password")
 
@@ -26,3 +30,10 @@ class LoginController:
 
     def run(self):
         self.view.mainloop()
+
+    def guest_page(self):
+        self.view.show_message("Login sucessful", "Chamando página de cliente")
+        #configurar chamada para o controlador da página de cliente
+    def employee_page(self):
+        self.view.show_message("Login sucessful", "Chamando página de funcionário")
+        #configurar chamada para o controlador da página de funcionário
