@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from tkinter import messagebox
 
-class UserView:
+class RegistrationView:
     def __init__(self, controller):
         self.controller = controller
         self.root = ctk.CTk()

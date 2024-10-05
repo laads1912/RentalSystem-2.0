@@ -5,7 +5,7 @@ class LoginView:
     def __init__(self, controller):
         self.controller = controller
         self.root = ctk.CTk()
-        self.root.title("RENTAL SYSTEM")
+        self.root.title("RENTAL SYSTEM - Login")
         self.root.geometry("1000x700")
 
         background_frame = ctk.CTkFrame(self.root, corner_radius=0, fg_color='white')
@@ -27,20 +27,19 @@ class LoginView:
         email_label = ctk.CTkLabel(self.login_frame, text="EMAIL", font=('DM Sans', 10), text_color='#8f8e8e')
         email_label.grid(row=1, column=0, sticky='w', pady=(5, 2))
 
-        self.email_entry = ctk.CTkEntry(self.login_frame, width=220, fg_color='lightgray', border_width=0)
+        self.email_entry = ctk.CTkEntry(self.login_frame, width=220, fg_color='lightgray', border_width=0, text_color='#4a4a4a')
         self.email_entry.grid(row=2, column=0, pady=(0, 10))
 
         password_label = ctk.CTkLabel(self.login_frame, text="PASSWORD", font=('DM Sans', 10), text_color='#8f8e8e')
         password_label.grid(row=3, column=0, sticky='w', pady=(5, 2))
 
-        self.password_entry = ctk.CTkEntry(self.login_frame, show='*', width=220, fg_color='lightgray', border_width=0)
+        self.password_entry = ctk.CTkEntry(self.login_frame, show='*', width=220, fg_color='lightgray', border_width=0, text_color='#4a4a4a')
         self.password_entry.grid(row=4, column=0, pady=(0, 10))
 
-        create_account_label = ctk.CTkLabel(self.login_frame, text="Create new account", font=('Telegraf', 10, 'bold'), text_color="#4094a5")
-        create_account_label.grid(row=5, column=0, pady=10)
-        create_account_label.bind("<Button-1>", self.open_registration)
+        create_account_button = ctk.CTkButton(self.login_frame, text="Create new account", font=('Poppins Bold', 13, 'bold'), fg_color='#4094a5', command=self.open_registration)
+        create_account_button.grid(row=5, column=0, pady=10)
 
-        sign_in_button = ctk.CTkButton(self.login_frame, text="Sign In", font=('Poppins Bols', 13, 'bold'), fg_color='#4094a5', command=self.login)
+        sign_in_button = ctk.CTkButton(self.login_frame, text="Sign In", font=('Poppins Bold', 13, 'bold'), fg_color='#4094a5', command=self.login)
         sign_in_button.grid(row=6, column=0, pady=10)
 
     def login(self):
