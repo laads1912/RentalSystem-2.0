@@ -10,13 +10,13 @@ class RegistrationController:
 
     def hash_password(self, password):
         salt = bcrypt.gensalt()
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
-        return hashed_password
+        password_hash = bcrypt.hashpw(password.encode('utf-8'), salt)
+        return password_hash
 
     def add_user(self, email, full_name, age, gender, height, weight, shoe_size, password):
-        hashed_password = self.hash_password(password)
+        password_hash = self.hash_password(password)
 
-        User(age, email, full_name, gender, height, hashed_password, shoe_size, weight).create_user()
+        User(age, email, full_name, gender, height, password_hash, shoe_size, weight).create_user()
         
         print(f'Usuário {full_name} registrado com sucesso.')
 

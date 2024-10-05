@@ -27,13 +27,13 @@ class LoginView:
         email_label = ctk.CTkLabel(self.login_frame, text="EMAIL", font=('DM Sans', 10), text_color='#8f8e8e')
         email_label.grid(row=1, column=0, sticky='w', pady=(5, 2))
 
-        self.email_entry = ctk.CTkEntry(self.login_frame, width=220, fg_color='lightgray', border_width=0)
+        self.email_entry = ctk.CTkEntry(self.login_frame, width=220, fg_color='lightgray', border_width=0, text_color='#4a4a4a')
         self.email_entry.grid(row=2, column=0, pady=(0, 10))
 
         password_label = ctk.CTkLabel(self.login_frame, text="PASSWORD", font=('DM Sans', 10), text_color='#8f8e8e')
         password_label.grid(row=3, column=0, sticky='w', pady=(5, 2))
 
-        self.password_entry = ctk.CTkEntry(self.login_frame, show='*', width=220, fg_color='lightgray', border_width=0)
+        self.password_entry = ctk.CTkEntry(self.login_frame, show='*', width=220, fg_color='lightgray', border_width=0, text_color='#4a4a4a')
         self.password_entry.grid(row=4, column=0, pady=(0, 10))
 
         create_account_label = ctk.CTkLabel(self.login_frame, text="Create new account", font=('Telegraf', 10, 'bold'), text_color="#4094a5")

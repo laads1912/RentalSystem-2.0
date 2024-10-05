@@ -1,4 +1,5 @@
 import sqlite3
+import bcrypt
 
 from models.User import User
 from views.LoginView import LoginView
@@ -13,11 +14,11 @@ class LoginController:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM users WHERE email = ?", (email,))
         user = cursor.fetchone()
-        
-        """if self.model.validate_user(email, password):
+        if user and bcrypt.checkpw(password.encode(), user[9]):
             self.view.show_message("Login Successful", f"Welcome, {email}!")
+            #aqui vai chamar o controller da página inicial ao invés de mostrar uma mensagem
         else:
-            self.view.show_message("Login Failed", "Invalid email or password")"""
+            self.view.show_message("Login Failed", "Invalid email or password")
 
     def handle_open_registration(self):
         self.view.root.withdraw()
