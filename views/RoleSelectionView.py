@@ -36,7 +36,9 @@ class RoleSelectionView:
         self.root.mainloop()
     
     def guest_page(self):
+        self.root.destroy()
         self.controller.guest_page()
 
     def employee_page(self):
+        self.root.destroy()
         self.controller.employee_page()
