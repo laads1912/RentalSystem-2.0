@@ -1,12 +1,11 @@
 import bcrypt
-from models.user_model import UserModel
-from views.user_view import UserView
+from models.User import User
+from views.RegistrationView import RegistrationView
 
-class UserController:
+class RegistrationController:
     def __init__(self, login_controller):
-        self.model = UserModel()
         self.login_controller = login_controller
-        self.view = UserView(self)
+        self.view = RegistrationView(self)
         self.view.root.mainloop()
 
     def hash_password(self, password):
@@ -17,11 +16,8 @@ class UserController:
     def add_user(self, email, full_name, age, gender, height, weight, shoe_size, password):
         hashed_password = self.hash_password(password)
 
-        user_data = (
-            email, full_name, age, gender, height, weight, shoe_size, True, True, hashed_password
-        )
+        User(age, email, full_name, gender, height, hashed_password, shoe_size, weight).create_user()
         
-        self.model.create_user(user_data)
         print(f'Usuário {full_name} registrado com sucesso.')
 
     def back_to_login(self):

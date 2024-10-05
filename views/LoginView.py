@@ -5,7 +5,7 @@ class LoginView:
     def __init__(self, controller):
         self.controller = controller
         self.root = ctk.CTk()
-        self.root.title("RENTAL SYSTEM")
+        self.root.title("RENTAL SYSTEM - Login")
         self.root.geometry("1000x700")
 
         background_frame = ctk.CTkFrame(self.root, corner_radius=0, fg_color='white')
