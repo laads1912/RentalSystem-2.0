@@ -18,7 +18,7 @@ class LoginController:
         if user and bcrypt.checkpw(password.encode(), user[9]):
             self.view.root.withdraw()
             if user[8] == 1:
-                RoleSelectionView(self).mainloop()
+                RoleSelectionView(self, user).mainloop()
             else:
                 self.guest_page(email)
         else:
@@ -33,13 +33,11 @@ class LoginController:
     def run(self):
         self.view.mainloop()
 
-
     def guest_page(self, email):
         self.view.show_message("Login sucessful", "Chamando página de cliente")
         registration_controller = RegistrationController(self) 
         registration_controller.open_home_page(email)
 
-
-    def employee_page(self):
+    def guest_page(self, user):
         self.view.show_message("Login sucessful", "Chamando página de funcionário")
         #configurar chamada para o controlador da página de funcionário
