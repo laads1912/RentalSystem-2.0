@@ -4,6 +4,7 @@ import bcrypt
 from controllers.EmployeeHomeController import EmployeeHomeController
 from controllers.RegistrationController import RegistrationController
 from views.LoginView import LoginView
+from views.RoleSelectionView import RoleSelectionView
 
 
 class LoginController:
@@ -17,8 +18,8 @@ class LoginController:
         user = cursor.fetchone()
         if user and bcrypt.checkpw(password.encode(), user[9]):
             self.view.root.withdraw()
-            if user[8] == 1:
-                self.employee_page(email)
+            if True:
+                RoleSelectionView(self, email).mainloop()
             else:
                 self.guest_page(email)
         else:
@@ -34,7 +35,6 @@ class LoginController:
         self.view.mainloop()
 
     def guest_page(self, email):
-        self.view.show_message("Login sucessful", "Chamando página de cliente")
         registration_controller = RegistrationController(self)
         registration_controller.open_home_page(email)
 

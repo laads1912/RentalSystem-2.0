@@ -149,7 +149,8 @@ class EmployeeUserEditView:
         messagebox.showinfo("Info", "Trash button clicked")
 
     def return_button_action(self):
-        messagebox.showinfo("Info", "Return button clicked")
+        self.root.destroy()
+        self.controller.view.root.deiconify()
 
     def create_buttons(self, parent):
         buttons = [

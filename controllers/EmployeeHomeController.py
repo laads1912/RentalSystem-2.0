@@ -10,6 +10,6 @@ class EmployeeHomeController:
         self.view.mainloop()
 
     def open_registered_users_page(self):
-        registered_users_controller = RegisteredUsersController(self)
+        registered_users_controller = RegisteredUsersController()
         self.view.root.withdraw()
         registered_users_controller.registered_users_page()
