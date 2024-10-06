@@ -14,7 +14,7 @@ class User:
         self.weight = weight
         self._logged = False
 
-    # possível implementação para garatir o controle de sessão do usuário
+    #possivel implementação para gerenciar a sessão do usuário
     '''@property
     def logged(self):
         return self._logged
