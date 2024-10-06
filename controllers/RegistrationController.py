@@ -7,8 +7,7 @@ from views.RegistrationView import RegistrationView
 class RegistrationController:
     def __init__(self, login_controller):
         self.login_controller = login_controller
-        self.view = RegistrationView(self)
-        self.view.root.mainloop()
+
 
     def hash_password(self, password):
         salt = bcrypt.gensalt()
