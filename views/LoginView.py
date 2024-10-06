@@ -47,7 +47,7 @@ class LoginView:
         password = self.password_entry.get()
         self.controller.handle_login(email, password)
 
-    def open_registration(self, event):
+    def open_registration(self):
         self.controller.handle_open_registration()
 
     def show_message(self, title, message):
