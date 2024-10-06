@@ -26,7 +26,9 @@ class LoginController:
 
     def handle_open_registration(self):
         self.view.root.withdraw()
-        RegistrationController(self)
+        registration_controller = RegistrationController(self) 
+        registration_controller.open_registration() 
+        
 
     def run(self):
         self.view.mainloop()
