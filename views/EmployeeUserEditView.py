@@ -2,12 +2,13 @@ import customtkinter as ctk
 from tkinter import messagebox
 
 from models.enums import GenderEnum
+from views.common.BaseLayout import create_background, initialize_window, create_header
 
 
 class EmployeeUserEditView:
     def __init__(self, controller):
         self.controller = controller
-        self.root = self.initialize_window()
+        self.root = initialize_window()
 
         self.full_name_entry = ''
         self.email_entry = ''
@@ -22,34 +23,11 @@ class EmployeeUserEditView:
 
         self.setup_ui()
 
-    def initialize_window(self):
-        root = ctk.CTk()
-        root.title("RENTAL SYSTEM")
-        root.geometry("1000x700")
-        return root
-
     def setup_ui(self):
-        background_frame = self.create_background()
-        self.create_header(background_frame)
+        background_frame = create_background(self.root)
+        create_header(background_frame)
         self.create_form_title(background_frame)
         self.create_edit_user_form(background_frame)
-
-    def create_background(self):
-        background_frame = ctk.CTkFrame(self.root, corner_radius=0, fg_color='white')
-        background_frame.place(relwidth=1, relheight=1)
-        return background_frame
-
-    def create_header(self, parent):
-        header_frame = ctk.CTkFrame(parent, height=50, fg_color='#81c9d8', corner_radius=0)
-        header_frame.pack(fill='x')
-
-        header_label = ctk.CTkLabel(
-            header_frame,
-            text="RENTAL SYSTEM",
-            font=('Poppins Medium', 18, 'bold'),
-            text_color="#535353"
-        )
-        header_label.pack(side='left', padx=10)
 
     def create_form_title(self, parent):
         title_frame = ctk.CTkFrame(parent, corner_radius=0, fg_color="white", width=400)
