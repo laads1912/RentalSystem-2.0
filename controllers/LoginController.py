@@ -1,10 +1,10 @@
 import sqlite3
 import bcrypt
 
-from models.User import User
 from views.LoginView import LoginView
 from controllers.RegistrationController import RegistrationController
 from views.RoleSelectionView import RoleSelectionView
+
 
 class LoginController:
     def __init__(self):
