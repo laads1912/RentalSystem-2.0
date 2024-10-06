@@ -38,6 +38,6 @@ class LoginController:
         registration_controller = RegistrationController(self) 
         registration_controller.open_home_page(email)
 
-    def guest_page(self, user):
+    def employee_page(self, user):
         self.view.show_message("Login sucessful", "Chamando página de funcionário")
         #configurar chamada para o controlador da página de funcionário
