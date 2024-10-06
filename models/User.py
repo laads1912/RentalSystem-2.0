@@ -12,6 +12,16 @@ class User:
         self.password_hash = password_hash
         self.shoe_size = shoe_size
         self.weight = weight
+        self._logged = False
+
+    # possível implementação para garatir o controle de sessão do usuário
+    '''@property
+    def logged(self):
+        return self._logged
+    
+    @logged.setter
+    def logged(self, value: bool):
+        self._logged = value'''
 
     def create_user(self):
         conn = sqlite3.connect('RentalSystem.db')
