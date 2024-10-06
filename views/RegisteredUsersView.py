@@ -1,12 +1,15 @@
+from tkinter import messagebox
+
 import customtkinter as ctk
 
 from views.common.BaseLayout import initialize_window, create_header, create_background, create_title
 
 
 class RegisteredUsersView:
-    def __init__(self, controller):
+    def __init__(self, controller, users):
         self.controller = controller
         self.root = initialize_window()
+        self.users = users
 
         self.setup_ui()
 
@@ -20,13 +23,11 @@ class RegisteredUsersView:
         users_frame = ctk.CTkScrollableFrame(parent, corner_radius=0, fg_color="white", width=1000)
         users_frame.pack(fill='y', expand=True)
 
-        users = ["John Doe", "Jane Smith", "Alex Johnson", "Chris Lee", "Emma Stone", "Will Turner", "Bruce Wayne"]
-
-        num_columns = 4
+        num_columns = 3
 
         users_frame.grid_columnconfigure(tuple(range(num_columns)), weight=1)
 
-        for index, user in enumerate(users):
+        for index, user in enumerate(self.users):
             row = index // num_columns
             col = index % num_columns
             self.create_card(users_frame, user, row, col)
@@ -41,7 +42,7 @@ class RegisteredUsersView:
 
         name_label = ctk.CTkLabel(
             card_frame,
-            text=user,
+            text=user['full_name'],
             bg_color='#81c9d8',
             font=('Poppins Medium', 20, 'bold'),
             text_color='#8f8e8e'
@@ -50,7 +51,7 @@ class RegisteredUsersView:
 
         gender_label = ctk.CTkLabel(
             card_frame,
-            text="Gender: teste",
+            text=f'Gender: {user['gender']}',
             font=('Poppins Medium', 15),
             text_color='#8f8e8e'
         )
@@ -58,14 +59,17 @@ class RegisteredUsersView:
 
         age_label = ctk.CTkLabel(
             card_frame,
-            text="Age: teste",
+            text=f'Age: {user['age']}',
             font=('Poppins Medium', 15),
             text_color='#8f8e8e'
         )
         age_label.grid(row=2, column=0, sticky="w", padx=10, pady=5)
 
-    def on_card_click(self, email):
-        self.controller.open_employee_user_edit_page(email)
+    def on_card_click(self, user):
+        self.controller.open_employee_user_edit_page(user)
+
+    def show_message(self, title, message):
+        messagebox.showinfo(title, message)
 
     def mainloop(self):
         self.root.mainloop()

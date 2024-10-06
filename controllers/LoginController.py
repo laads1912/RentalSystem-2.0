@@ -18,7 +18,7 @@ class LoginController:
         user = cursor.fetchone()
         if user and bcrypt.checkpw(password.encode(), user[9]):
             self.view.root.withdraw()
-            if True:
+            if user[8] == 1:
                 RoleSelectionView(self, email).mainloop()
             else:
                 self.guest_page(email)
