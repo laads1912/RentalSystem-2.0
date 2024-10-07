@@ -205,7 +205,7 @@ class EmployeeUserEditView:
         weight = self.weight_entry.get()
         height = self.height_entry.get()
 
-        self.controller.update_user(self.email, new_email, full_name, new_password, password_confirmation, gender, int(us_shoe_size), int(age), is_employee, int(weight), int(height))
+        self.controller.update_user_as_employee(self.email, new_email, full_name, new_password, password_confirmation, gender, int(us_shoe_size), int(age), is_employee, int(weight), int(height))
 
     def working_historic(self):
         messagebox.showinfo("Info", "Working History clicked")
