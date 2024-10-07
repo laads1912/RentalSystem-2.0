@@ -13,18 +13,6 @@ def create_background(root):
     return background_frame
 
 
-def create_header(parent):
-    header_frame = ctk.CTkFrame(parent, height=50, fg_color='#81c9d8', corner_radius=0)
-    header_frame.pack(fill='x')
-
-    header_label = ctk.CTkLabel(
-        header_frame,
-        text="RENTAL SYSTEM",
-        font=('Poppins Medium', 18, 'bold'),
-        text_color="#535353"
-    )
-    header_label.pack(side='left', padx=10)
-
 def create_title(parent, text):
     title_frame = ctk.CTkFrame(parent, corner_radius=0, fg_color="white", width=400)
     title_frame.pack(pady=20)

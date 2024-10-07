@@ -5,8 +5,13 @@ from views.RegisteredUsersView import RegisteredUsersView
 
 
 class RegisteredUsersController:
-    def __init__(self):
+    def __init__(self, controller):
+        self.controller = controller
         self.view = None
+
+    def return_home(self):
+        self.view.root.withdraw()
+        self.controller.employee_page()
 
     def registered_users_page(self):
         users = User.get_all_users()
@@ -58,3 +63,8 @@ class RegisteredUsersController:
         self.view.root.withdraw()
         self.registered_users_page()
 
+    def delete_user(self, email):
+        User.delete_user(email)
+        self.view.show_message("Success", "User deleted successfully.")
+        self.view.root.withdraw()
+        self.registered_users_page()

@@ -2,7 +2,7 @@ from tkinter import messagebox
 
 import customtkinter as ctk
 
-from views.common.BaseLayout import initialize_window, create_header, create_background, create_title
+from views.common.BaseLayout import initialize_window, create_background, create_title
 
 
 class RegisteredUsersView:
@@ -15,9 +15,42 @@ class RegisteredUsersView:
 
     def setup_ui(self):
         background_frame = create_background(self.root)
-        create_header(background_frame)
+        self.create_header(background_frame)
         create_title(background_frame, 'Registered Users')
         self.create_users_cards(background_frame)
+
+    def create_header(self, parent):
+        header_frame = ctk.CTkFrame(parent, height=50, fg_color='#81c9d8', corner_radius=0)
+        header_frame.pack(fill='x')
+
+        header_label = ctk.CTkLabel(
+            header_frame,
+            text="RENTAL SYSTEM",
+            font=('Poppins Medium', 18, 'bold'),
+            text_color="#535353"
+        )
+        header_label.pack(side='left', padx=10)
+
+        spacer_label = ctk.CTkLabel(
+            header_frame,
+            text="RENTAL SYSTEM",
+            font=('Poppins Medium', 18, 'bold'),
+            text_color="#81c9d8"
+        )
+        spacer_label.pack(side='right', padx=10)
+
+        buttons_frame = ctk.CTkFrame(header_frame, fg_color='#81c9d8')
+        buttons_frame.pack(side='top', pady=5)
+
+        home_button = ctk.CTkButton(
+            buttons_frame,
+            text='Home',
+            fg_color='#535353',
+            command=self.home_button_action,
+            width=30,
+            height=30
+        )
+        home_button.grid(row=0, column=0, padx=10)
 
     def create_users_cards(self, parent):
         users_frame = ctk.CTkScrollableFrame(parent, corner_radius=0, fg_color="white", width=1000)
@@ -64,6 +97,9 @@ class RegisteredUsersView:
             text_color='#8f8e8e'
         )
         age_label.grid(row=2, column=0, sticky="w", padx=10, pady=5)
+
+    def home_button_action(self):
+        self.controller.return_home()
 
     def on_card_click(self, user):
         self.controller.open_employee_user_edit_page(user)

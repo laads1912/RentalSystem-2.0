@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from views.common.BaseLayout import create_background, create_header, initialize_window, create_title
+from views.common.BaseLayout import create_background, initialize_window, create_title
 
 
 class EmployeeHomeView:
@@ -40,7 +40,7 @@ class EmployeeHomeView:
 
         equipments_button = ctk.CTkButton(
             buttons_frame,
-            text='',
+            text='Equipments',
             fg_color='#535353',
             command=self.equipments_button_action,
             width=30,
@@ -50,7 +50,7 @@ class EmployeeHomeView:
 
         logout_button = ctk.CTkButton(
             buttons_frame,
-            text='',
+            text='Logout',
             command=self.logout_button_action,
             fg_color='#535353',
             width=30,
@@ -60,7 +60,7 @@ class EmployeeHomeView:
 
         registered_users_button = ctk.CTkButton(
             buttons_frame,
-            text='',
+            text='Users',
             fg_color='#535353',
             command=self.registered_users_button_action,
             width=30,
@@ -69,7 +69,7 @@ class EmployeeHomeView:
         registered_users_button.grid(row=0, column=2, padx=10)
 
     def equipments_button_action(self):
-        self.controller.equipments_page()
+        self.controller.open_equipments_page()
 
     def logout_button_action(self):
         self.controller.logout()

@@ -38,6 +38,6 @@ class LoginController:
         registration_controller = RegistrationController(self)
         registration_controller.open_home_page(email)
 
-    def employee_page(self, email):
+    def employee_page(self):
         employee_home_controller = EmployeeHomeController(self)
         employee_home_controller.open_home_page()

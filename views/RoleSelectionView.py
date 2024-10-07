@@ -42,4 +42,4 @@ class RoleSelectionView:
 
     def employee_page(self):
         self.root.destroy()
-        self.controller.employee_page(self.email)
+        self.controller.employee_page()

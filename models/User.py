@@ -135,3 +135,25 @@ class User:
 
         return users_list
 
+    @classmethod
+    def delete_user(cls, email):
+        conn = sqlite3.connect('RentalSystem.db')
+        cursor = conn.cursor()
+
+        try:
+            cursor.execute('''
+                DELETE FROM Users WHERE email = ?
+                ''', (email,))
+
+            if cursor.rowcount == 0:
+                print(f"No user found with email: {email}")
+            else:
+                print(f"User with email: {email} deleted successfully.")
+
+            conn.commit()
+
+        except sqlite3.Error as e:
+            print(f"An error occurred while deleting the user: {e}")
+
+        finally:
+            conn.close()

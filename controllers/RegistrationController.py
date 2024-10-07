@@ -1,5 +1,3 @@
-import bcrypt
-
 from controllers.Utils import hash_password
 from models.User import User
 from views.HomeView import HomeView

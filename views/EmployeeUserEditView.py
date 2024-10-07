@@ -2,7 +2,7 @@ import customtkinter as ctk
 from tkinter import messagebox
 
 from models.enums import GenderEnum
-from views.common.BaseLayout import create_background, initialize_window, create_header
+from views.common.BaseLayout import create_background, initialize_window
 
 
 class EmployeeUserEditView:
@@ -27,9 +27,21 @@ class EmployeeUserEditView:
 
     def setup_ui(self):
         background_frame = create_background(self.root)
-        create_header(background_frame)
+        self.create_header(background_frame)
         self.create_form_title(background_frame)
         self.create_edit_user_form(background_frame)
+
+    def create_header(self, parent):
+        header_frame = ctk.CTkFrame(parent, height=50, fg_color='#81c9d8', corner_radius=0)
+        header_frame.pack(fill='x')
+
+        header_label = ctk.CTkLabel(
+            header_frame,
+            text="RENTAL SYSTEM",
+            font=('Poppins Medium', 18, 'bold'),
+            text_color="#535353"
+        )
+        header_label.pack(side='left', padx=10)
 
     def create_form_title(self, parent):
         title_frame = ctk.CTkFrame(parent, corner_radius=0, fg_color="white", width=400)
@@ -39,15 +51,15 @@ class EmployeeUserEditView:
         title_frame.grid_columnconfigure(1, weight=0)
         title_frame.grid_columnconfigure(2, weight=1)
 
-        trash_button = ctk.CTkButton(
+        delete_user_button = ctk.CTkButton(
             title_frame,
-            command=self.trash_button_action,
-            text='',
-            fg_color='#4094a5',
+            command=self.delete_user_action,
+            text='Delete User',
+            fg_color='#535353',
             width=20,
             height=20
         )
-        trash_button.grid(row=0, column=0, padx=(0, 10))
+        delete_user_button.grid(row=0, column=0, padx=(0, 10))
 
         edit_label = ctk.CTkLabel(
             title_frame,
@@ -60,8 +72,8 @@ class EmployeeUserEditView:
         return_button = ctk.CTkButton(
             title_frame,
             command=self.return_button_action,
-            text='',
-            fg_color='#4094a5',
+            text='Return',
+            fg_color='#535353',
             width=20,
             height=20
         )
@@ -151,8 +163,13 @@ class EmployeeUserEditView:
 
         return radio_value
 
-    def trash_button_action(self):
-        messagebox.showinfo("Info", "Trash button clicked")
+    def delete_user_action(self):
+        confirm = messagebox.askyesno("Confirm Delete",
+                                      "Are you sure you want to delete this user?")
+        if confirm:
+            self.controller.delete_user(self.email)
+        else:
+            self.show_message('Error', "User deletion canceled.")
 
     def return_button_action(self):
         self.root.withdraw()
