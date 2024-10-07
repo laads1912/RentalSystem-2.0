@@ -24,12 +24,12 @@ class RegisteredUsersController:
         self.view.root.withdraw()
         self.view = EmployeeUserEditView(self, user)
         self.view.mainloop()
-    
+
     def open_user_edit_page(self, email):
         user = User.get_all_user_data(email)
         self.view = UserEditView(self, user)  
         self.view.mainloop()
-    
+
     def open_user_home_page(self, email):
         self.view = UserHomeView(self, email)
         self.view.root.mainloop(email)
@@ -42,48 +42,46 @@ class RegisteredUsersController:
 
     def update_user_as_employee(self, email, new_email, full_name, new_password, password_confirmation, gender, shoe_size, age,
                     is_employee, weight, height):
-        self.update_user(email, new_email, full_name, new_password, password_confirmation, gender, shoe_size, age,
-                    is_employee, weight, height)
-        self.registered_users_page()
-
+        if self.update_user(email, new_email, full_name, new_password, password_confirmation, gender, shoe_size, age,
+                        is_employee, weight, height):
+            self.registered_users_page()
 
     def update_user_as_user(self, email, new_email, full_name, new_password, password_confirmation, gender, shoe_size, age,
                     is_employee, weight, height):
-        
-        self.update_user(email, new_email, full_name, new_password, password_confirmation, gender, shoe_size, age,
-                    is_employee, weight, height)
-        self.open_user_home_page(email)
+        if self.update_user(email, new_email, full_name, new_password, password_confirmation, gender, shoe_size, age,
+                        is_employee, weight, height):
+            self.open_user_home_page(email)
 
     def update_user(self, email, new_email, full_name, new_password, password_confirmation, gender, shoe_size, age,
                     is_employee, weight, height):
         if not new_email or not full_name or not gender or not age or not shoe_size or not weight or not height:
             self.view.show_message("Error", "All fields (except password) are required.")
-            return
+            return False
 
         if "@" not in new_email or "." not in new_email.split("@")[-1]:
             self.view.show_message("Error", "Invalid email format.")
-            return
+            return False
 
         if not isinstance(age, int) or age <= 0:
             self.view.show_message("Error", "Age must be a positive integer.")
-            return
+            return False
 
         if not isinstance(shoe_size, int) or shoe_size <= 0:
             self.view.show_message("Error", "Shoe size must be a positive number.")
-            return
+            return False
 
         if not isinstance(weight, int) or weight <= 0:
             self.view.show_message("Error", "Weight must be a positive number.")
-            return
+            return False
 
         if not isinstance(height, int) or height <= 0:
             self.view.show_message("Error", "Height must be a positive number.")
-            return
+            return False
 
         if new_password:
             if new_password != password_confirmation:
                 self.view.show_message("Error", "Password confirmation does not match.")
-                return
+                return False
 
             new_password_hash = hash_password(new_password)
         else:
@@ -91,7 +89,8 @@ class RegisteredUsersController:
 
         User.update_user(email, new_email, full_name, age, gender, height, weight, shoe_size, new_password_hash, is_employee)
         self.view.show_message("Success", "User updated successfully.")
-        self.view.root.withdraw()
+        self.view.root.withdraw() 
+        return True
 
     def delete_user(self, email):
         User.delete_user(email)
