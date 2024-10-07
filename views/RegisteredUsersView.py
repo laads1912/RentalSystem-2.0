@@ -99,7 +99,7 @@ class RegisteredUsersView:
         age_label.grid(row=2, column=0, sticky="w", padx=10, pady=5)
 
     def home_button_action(self):
-        self.controller.return_home()
+        self.controller.return_employee_home()
 
     def on_card_click(self, user):
         self.controller.open_employee_user_edit_page(user)

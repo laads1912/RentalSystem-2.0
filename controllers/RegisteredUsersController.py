@@ -11,9 +11,7 @@ class RegisteredUsersController:
         self.controller = controller
         self.view = None
 
-    def return_home(self):
-        self.view.root.withdraw()
-        self.controller.employee_page()
+    
 
     def registered_users_page(self):
         users = User.get_all_users()
@@ -25,20 +23,19 @@ class RegisteredUsersController:
         self.view = EmployeeUserEditView(self, user)
         self.view.mainloop()
 
-    def open_user_edit_page(self, email):
+    def user_edit_page(self, email):
         user = User.get_all_user_data(email)
         self.view = UserEditView(self, user)  
         self.view.mainloop()
 
-    def open_user_home_page(self, email):
-        self.view = UserHomeView(self, email)
-        self.view.root.mainloop(email)
+    def return_employee_home(self):
+        self.view.root.withdraw()
+        self.controller.employee_page()
+    
+    def return_user_home(self, email):
+        self.view.root.withdraw()
+        self.controller.guest_page(email)
 
-    def log_out(self):
-        from controllers.LoginController import LoginController
-        self.view.root.destroy()
-        login_controller = LoginController()
-        login_controller.run()
 
     def update_user_as_employee(self, email, new_email, full_name, new_password, password_confirmation, gender, shoe_size, age,
                     is_employee, weight, height):
@@ -50,7 +47,7 @@ class RegisteredUsersController:
                     is_employee, weight, height):
         if self.update_user(email, new_email, full_name, new_password, password_confirmation, gender, shoe_size, age,
                         is_employee, weight, height):
-            self.open_user_home_page(email)
+            self.return_user_home(email)
 
     def update_user(self, email, new_email, full_name, new_password, password_confirmation, gender, shoe_size, age,
                     is_employee, weight, height):

@@ -69,7 +69,7 @@ class UserHomeView:
         rental_requests_button.grid(row=1, column=0, padx=10, pady=20)
 
     def log_out_button_action(self):
-        self.controller.log_out()
+        self.controller.logout()
         
 
     def open_account_information(self):
