@@ -36,9 +36,9 @@ class LoginController:
         self.view.mainloop()
 
     def guest_page(self, email):
-        user_home_controller = RegisteredUsersController(self)
-        user_home_controller.open_user_home_page(email)
+        employee_home_controller = EmployeeHomeController(self)
+        employee_home_controller.open_user_home_page(email)
 
     def employee_page(self):
         employee_home_controller = EmployeeHomeController(self)
-        employee_home_controller.open_home_page()
+        employee_home_controller.open_employee_home_page()
