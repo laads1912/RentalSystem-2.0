@@ -2,7 +2,7 @@ import sqlite3
 import bcrypt
 
 from controllers.RegisteredUsersController import RegisteredUsersController
-from controllers.EmployeeHomeController import EmployeeHomeController
+from controllers.HomeController import HomeController
 from controllers.RegistrationController import RegistrationController
 from views.LoginView import LoginView
 from views.RoleSelectionView import RoleSelectionView
@@ -36,9 +36,9 @@ class LoginController:
         self.view.mainloop()
 
     def guest_page(self, email):
-        employee_home_controller = EmployeeHomeController(self)
-        employee_home_controller.open_user_home_page(email)
+        employee_home_controller = HomeController(self)
+        employee_home_controller.open_guest_home_page(email)
 
     def employee_page(self):
-        employee_home_controller = EmployeeHomeController(self)
+        employee_home_controller = HomeController(self)
         employee_home_controller.open_employee_home_page()

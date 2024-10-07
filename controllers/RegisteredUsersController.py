@@ -2,8 +2,8 @@ from controllers.Utils import hash_password
 from models.User import User
 from views.EmployeeUserEditView import EmployeeUserEditView
 from views.RegisteredUsersView import RegisteredUsersView
-from views.UserEditView import UserEditView
-from views.UserHomeView import UserHomeView
+from views.GuestEditView import GuestEditView
+from views.GuestHomeView import GuestHomeView
 
 
 class RegisteredUsersController:
@@ -23,16 +23,16 @@ class RegisteredUsersController:
         self.view = EmployeeUserEditView(self, user)
         self.view.mainloop()
 
-    def user_edit_page(self, email):
+    def guest_edit_page(self, email):
         user = User.get_all_user_data(email)
-        self.view = UserEditView(self, user)  
+        self.view = GuestEditView(self, user)  
         self.view.mainloop()
 
     def return_employee_home(self):
         self.view.root.withdraw()
         self.controller.employee_page()
     
-    def return_user_home(self, email):
+    def return_guest_home(self, email):
         self.view.root.withdraw()
         self.controller.guest_page(email)
 
@@ -43,11 +43,11 @@ class RegisteredUsersController:
                         is_employee, weight, height):
             self.registered_users_page()
 
-    def update_user_as_user(self, email, new_email, full_name, new_password, password_confirmation, gender, shoe_size, age,
+    def update_user_as_guest(self, email, new_email, full_name, new_password, password_confirmation, gender, shoe_size, age,
                     is_employee, weight, height):
         if self.update_user(email, new_email, full_name, new_password, password_confirmation, gender, shoe_size, age,
                         is_employee, weight, height):
-            self.return_user_home(email)
+            self.return_guest_home(email)
 
     def update_user(self, email, new_email, full_name, new_password, password_confirmation, gender, shoe_size, age,
                     is_employee, weight, height):

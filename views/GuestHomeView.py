@@ -2,7 +2,7 @@ from tkinter import messagebox
 import customtkinter as ctk
 from views.common.BaseLayout import create_background, initialize_window, create_title
 
-class UserHomeView:
+class GuestHomeView:
     def __init__(self, controller, email):
         self.email = email
         self.controller = controller
@@ -74,7 +74,7 @@ class UserHomeView:
 
     def open_account_information(self):
         self.close()
-        self.controller.open_user_edit_page(self.email)
+        self.controller.open_guest_edit_page(self.email)
 
     def open_rental_requests(self):
         self.close()
