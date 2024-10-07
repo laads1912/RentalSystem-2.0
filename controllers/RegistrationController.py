@@ -46,12 +46,8 @@ class RegistrationController:
             return
 
     def open_registration(self):
-        self.view = RegistrationView(self)
-        self.view.root.mainloop()
+        self.registration_view.root.deiconify()
     
-
-    
-
     def back_to_login(self):
-        self.view.root.withdraw()
+        self.registration_view.root.withdraw()
         self.login_controller.view.root.deiconify()
