@@ -1,125 +1,164 @@
 import customtkinter as ctk
 from tkinter import messagebox
 
+from models.enums import GenderEnum
+from views.common.BaseLayout import create_background, initialize_window
+
 class UserEditView:
     def __init__(self, controller, user):
         self.controller = controller
-        self.user = user
-        self.root = ctk.CTk()
-        self.root.title("RENTAL SYSTEM - Edit Account")
-        self.root.geometry("1000x700")
+        self.root = initialize_window()
 
-        background_frame = ctk.CTkFrame(self.root, corner_radius=0, fg_color='white')
-        background_frame.place(relwidth=1, relheight=1)
+        self.email = user['email']
+        self.is_employee = user['is_employee']
 
-        header_frame = ctk.CTkFrame(background_frame, height=50, fg_color='#81c9d8', corner_radius=0)
+        self.full_name_entry = user['full_name']
+        self.email_entry = user['email']
+        self.age_entry = user['age']
+        self.gender_entry = user['gender']
+        self.height_entry = user['height']
+        self.weight_entry = user['weight']
+        self.us_shoe_size_entry = user['shoe_size']
+        self.password_entry = ''
+        self.password_confirmation_entry = ''
+
+        self.setup_ui()
+
+    def setup_ui(self):
+        background_frame = create_background(self.root)
+        self.create_header(background_frame)
+        self.create_form_title(background_frame)
+        self.create_edit_user_form(background_frame)
+
+    def initialize_window(self):
+        root = ctk.CTk()
+        root.title("RENTAL SYSTEM - Edit Account")
+        root.geometry("1000x700")
+        return root
+
+
+    def create_header(self, parent):
+        header_frame = ctk.CTkFrame(parent, height=50, fg_color='#81c9d8', corner_radius=0)
         header_frame.pack(fill='x')
 
-        header_label = ctk.CTkLabel(header_frame, text="RENTAL SYSTEM", font=('Poppins Medium', 18, 'bold'), text_color="#535353")
+        header_label = ctk.CTkLabel(
+            header_frame,
+            text="RENTAL SYSTEM",
+            font=('Poppins Medium', 18, 'bold'),
+            text_color="#535353"
+        )
         header_label.pack(side='left', padx=10)
 
-        edit_frame = ctk.CTkFrame(background_frame, corner_radius=10, fg_color="white")
-        edit_frame.pack(pady=20)
-        edit_frame.place(relx=0.5, rely=0.5, anchor='center')
+    def create_form_title(self, parent):
+        title_frame = ctk.CTkFrame(parent, corner_radius=0, fg_color="white")
+        title_frame.pack(pady=20)
 
-        edit_label = ctk.CTkLabel(edit_frame, text="Editar Perfil", font=('Poppins Medium', 30, 'bold'), text_color='#8f8e8e')
-        edit_label.grid(row=0, column=0, columnspan=2, pady=10)
+        edit_label = ctk.CTkLabel(
+            title_frame,
+            text="Editar Perfil",
+            font=('Poppins Medium', 36, 'bold'),
+            text_color='#8f8e8e'
+        )
+        edit_label.grid(row=0, column=0, pady=10)
 
-        label_email = ctk.CTkLabel(edit_frame, text="EMAIL", font=('DM Sans', 10), text_color='#8f8e8e')
-        label_email.grid(row=1, column=0, sticky='w', pady=(5, 2))
-        self.entry_email = ctk.CTkEntry(edit_frame, placeholder_text="Email", width=220, fg_color='lightgray', border_width=0)
-        self.entry_email.grid(row=2, column=0, pady=(0, 10))
-        self.entry_email.insert(0, self.user['email'])
+    def create_edit_user_form(self, parent):
+        form_frame = ctk.CTkScrollableFrame(parent, corner_radius=0, fg_color="white", width=400)
+        form_frame.pack(fill='y', expand=True)
 
-        label_name = ctk.CTkLabel(edit_frame, text="NOME COMPLETO", font=('DM Sans', 10), text_color='#8f8e8e')
-        label_name.grid(row=3, column=0, sticky='w', pady=(5, 2))
-        self.entry_name = ctk.CTkEntry(edit_frame, placeholder_text="Nome Completo", width=220, fg_color='lightgray', border_width=0)
-        self.entry_name.grid(row=4, column=0, pady=(0, 10))
-        self.entry_name.insert(0, self.user['full_name'])
+        self.full_name_entry = self.create_form_field(form_frame, "FULL NAME", 2, self.full_name_entry)
+        self.email_entry = self.create_form_field(form_frame, "EMAIL", 4, self.email_entry)
+        self.password_entry = self.create_form_field(form_frame, "NEW PASSWORD", 6, self.password_entry,
+                                                     entry_options={"show": '*'})
+        self.password_confirmation_entry = self.create_form_field(form_frame, "PASSWORD CONFIRMATION", 8,
+                                                                  self.password_confirmation_entry,
+                                                                  entry_options={"show": '*'})
+        self.gender_entry = self.create_gender_select(form_frame, "GENDER", 10, self.gender_entry)
+        self.us_shoe_size_entry = self.create_form_field(form_frame, "US SHOE SIZE", 12, self.us_shoe_size_entry)
+        self.age_entry = self.create_form_field(form_frame, "AGE", 14, self.age_entry)
+        self.weight_entry = self.create_form_field(form_frame, "WEIGHT (KG)", 18, self.weight_entry)
+        self.height_entry = self.create_form_field(form_frame, "HEIGHT (CM)", 20, self.height_entry)
 
-        label_age = ctk.CTkLabel(edit_frame, text="IDADE", font=('DM Sans', 10), text_color='#8f8e8e')
-        label_age.grid(row=5, column=0, sticky='w', pady=(5, 2))
-        self.entry_age = ctk.CTkEntry(edit_frame, placeholder_text="Idade", width=220, fg_color='lightgray', border_width=0)
-        self.entry_age.grid(row=6, column=0, pady=(0, 10))
-        self.entry_age.insert(0, self.user['age'])
+        self.create_buttons(form_frame)
 
-        label_gender = ctk.CTkLabel(edit_frame, text="GÊNERO", font=('DM Sans', 10), text_color='#8f8e8e')
-        label_gender.grid(row=7, column=0, sticky='w', pady=(5, 2))
-        self.entry_gender = ctk.CTkEntry(edit_frame, placeholder_text="Gênero (MALE/FEMALE)", width=220, fg_color='lightgray', border_width=0)
-        self.entry_gender.grid(row=8, column=0, pady=(0, 10))
-        self.entry_gender.insert(0, self.user['gender'])
+    def create_form_field(self, parent, label_text, row, user_value, entry_options=None):
+        ctk.CTkLabel(parent, text=label_text, font=('DM Sans', 10), text_color='#8f8e8e').grid(
+            row=row, column=0, sticky='w', pady=(5, 2), padx=(20, 0)  # Adicionando padding horizontal para centralizar melhor
+        )
 
-        label_height = ctk.CTkLabel(edit_frame, text="ALTURA (cm)", font=('DM Sans', 10), text_color='#8f8e8e')
-        label_height.grid(row=9, column=0, sticky='w', pady=(5, 2))
-        self.entry_height = ctk.CTkEntry(edit_frame, placeholder_text="Altura (cm)", width=220, fg_color='lightgray', border_width=0)
-        self.entry_height.grid(row=10, column=0, pady=(0, 10))
-        self.entry_height.insert(0, self.user['height'])
+        entry_options = entry_options or {}
+        entry = ctk.CTkEntry(
+            parent,
+            width=220,
+            fg_color='lightgray',
+            border_width=0,
+            text_color='#4a4a4a',
+            **entry_options
+        )
+        entry.grid(row=row + 1, column=0, columnspan=2, padx=10, pady=(0, 10), sticky='nsew')
+        entry.insert(0, user_value)
 
-        label_weight = ctk.CTkLabel(edit_frame, text="PESO (kg)", font=('DM Sans', 10), text_color='#8f8e8e')
-        label_weight.grid(row=11, column=0, sticky='w', pady=(5, 2))
-        self.entry_weight = ctk.CTkEntry(edit_frame, placeholder_text="Peso (kg)", width=220, fg_color='lightgray', border_width=0)
-        self.entry_weight.grid(row=12, column=0, pady=(0, 10))
-        self.entry_weight.insert(0, self.user['weight'])
+        return entry
+    
+    def create_gender_select(self, parent, label_text, row, default_value=GenderEnum.MALE.value):
+        gender_options = [GenderEnum.MALE.value, GenderEnum.FEMALE.value]
+        entry = ctk.StringVar(value=default_value)
 
-        label_shoe_size = ctk.CTkLabel(edit_frame, text="TAMANHO DO CALÇADO", font=('DM Sans', 10), text_color='#8f8e8e')
-        label_shoe_size.grid(row=13, column=0, sticky='w', pady=(5, 2))
-        self.entry_shoe_size = ctk.CTkEntry(edit_frame, placeholder_text="Tamanho do Calçado", width=220, fg_color='lightgray', border_width=0)
-        self.entry_shoe_size.grid(row=14, column=0, pady=(0, 10))
-        self.entry_shoe_size.insert(0, self.user['shoe_size'])
+        ctk.CTkLabel(parent, text=label_text, text_color='#8f8e8e').grid(
+            row=row, column=0, columnspan=2, padx=10, pady=(5, 2), sticky='w'
+        )
 
-        label_password = ctk.CTkLabel(edit_frame, text="NOVA SENHA", font=('DM Sans', 10), text_color='#8f8e8e')
-        label_password.grid(row=15, column=0, sticky='w', pady=(5, 2))
-        self.entry_password = ctk.CTkEntry(edit_frame, placeholder_text="Nova Senha", show='*', width=220, fg_color='lightgray', border_width=0)
-        self.entry_password.grid(row=16, column=0, pady=(0, 10))
+        gender_select = ctk.CTkOptionMenu(
+            parent,
+            variable=entry,
+            fg_color='lightgray',
+            button_color='lightgray',
+            button_hover_color='gray',
+            dropdown_fg_color='lightgray',
+            dropdown_text_color='#4a4a4a',
+            dropdown_hover_color='gray',
+            text_color='#4a4a4a',
+            values=gender_options
+        )
+        gender_select.grid(row=row + 1, column=0, columnspan=2, padx=10, pady=(0, 10), sticky='nsew')
 
-        label_confirm_password = ctk.CTkLabel(edit_frame, text="CONFIRMAR SENHA", font=('DM Sans', 10), text_color='#8f8e8e')
-        label_confirm_password.grid(row=17, column=0, sticky='w', pady=(5, 2))
-        self.entry_confirm_password = ctk.CTkEntry(edit_frame, placeholder_text="Confirmar Senha", show='*', width=220, fg_color='lightgray', border_width=0)
-        self.entry_confirm_password.grid(row=18, column=0, pady=(0, 10))
+        return entry
 
-        button_update = ctk.CTkButton(edit_frame, text="Atualizar", font=('Poppins Bold', 13, 'bold'), fg_color='#4094a5', command=self.update_user)
-        button_update.grid(row=19, column=0, pady=10)
+    def return_button_action(self):
+        self.root.withdraw()
+        self.controller.registered_users_page()
 
-        button_back = ctk.CTkButton(edit_frame, text="Cancelar", font=('Poppins Bold', 13, 'bold'), fg_color='#4094a5', command=self.back_to_login)
-        button_back.grid(row=20, column=0, pady=10)
+    def create_buttons(self, parent):
+        buttons = [
+            ("Save", self.update_user),
+        ]
+        for i, (text, command) in enumerate(buttons):
+            ctk.CTkButton(
+                parent,
+                text=text,
+                font=('Poppins Bold', 13, 'bold'),
+                fg_color='#81c9d8',
+                command=command
+            ).grid(row=23 + i, column=0, columnspan=2, pady=10)
 
     def update_user(self):
-        new_email = self.entry_email.get()
-        full_name = self.entry_name.get()
-        age = self.entry_age.get()
-        gender = self.entry_gender.get().upper()
-        height = self.entry_height.get()
-        weight = self.entry_weight.get()
-        shoe_size = self.entry_shoe_size.get()
-        password = self.entry_password.get()
-        confirm_password = self.entry_confirm_password.get()
+        full_name = self.full_name_entry.get()
+        new_email = self.email_entry.get()
+        new_password = self.password_entry.get()
+        password_confirmation = self.password_confirmation_entry.get()
+        gender = self.gender_entry.get()
+        us_shoe_size = self.us_shoe_size_entry.get()
+        age = self.age_entry.get()
+        weight = self.weight_entry.get()
+        height = self.height_entry.get()
 
-        if not all([new_email, full_name, age, gender, height, weight, shoe_size]):
-            messagebox.showerror("Erro", "Todos os campos são obrigatórios, exceto senha.")
-            return
+        self.controller.update_user_as_user(self.email, new_email, full_name, new_password, password_confirmation, gender, int(us_shoe_size), int(age), self.is_employee, int(weight), int(height))
 
-        if '@' not in new_email:
-            messagebox.showerror("Erro", "E-mail inválido. Certifique-se de que o e-mail contém '@'.")
-            return
+    def show_message(self, title, message):
+        messagebox.showinfo(title, message)
+    
 
-        if gender not in ['MALE', 'FEMALE']:
-            messagebox.showerror("Erro", "Gênero inválido. Use 'MALE' ou 'FEMALE'.")
-            return
-
-        if password or confirm_password:
-            if password != confirm_password:
-                messagebox.showerror("Erro", "As senhas não coincidem.")
-                return
-
-        try:
-            self.controller.update_user(self.user['email'], new_email, full_name, int(age), gender, int(height), int(weight), int(shoe_size), password)
-            messagebox.showinfo("Sucesso", "Usuário atualizado com sucesso!")
-            self.controller.back_to_login()
-        except Exception as e:
-            messagebox.showerror("Erro", f"Erro ao atualizar usuário: {e}")
-
-    def back_to_login(self):   
-        self.controller.back_to_login()
-
+    def mainloop(self):
+        self.root.mainloop()
+    
     def close(self):
         self.root.destroy()
