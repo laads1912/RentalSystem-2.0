@@ -1,7 +1,5 @@
 from controllers.Utils import hash_password
 from models.User import User
-from views.HomeView import HomeView
-from views.UserEditView import UserEditView
 from views.RegistrationView import RegistrationView
 
 class RegistrationController:
@@ -51,24 +49,9 @@ class RegistrationController:
         self.view = RegistrationView(self)
         self.view.root.mainloop()
     
-    def open_edit_user(self, email):
-        user = User.get_all_user_data(email)
-        self.view = UserEditView(self, user)
-        self.view.root.mainloop()
+
     
-    def open_home_page(self, email):
-        self.view = HomeView(self, email)
-        self.view.root.mainloop()
-
-    def update_user(self, email, new_email, full_name, age, gender, height, weight, shoe_size, password=None):
-        if password:
-            password_hash = hash_password(password)
-        else:
-            password_hash = None
-
-        User.update_user(email, new_email, full_name, age, gender, height, weight, shoe_size, password_hash)
-        print(f'User updated successfully.')
 
     def back_to_login(self):
-        self.view.close()
+        self.view.root.withdraw()
         self.login_controller.view.root.deiconify()
