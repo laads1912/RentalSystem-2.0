@@ -19,7 +19,7 @@ class HomeController:
 
     def logout(self):
         self.view.root.withdraw()
-        self.login_controller.reset_login_fields()  # Limpa os campos de e-mail e senha
+        self.login_controller.reset_login_fields() 
         self.login_controller.view.root.deiconify()
 
     def open_registered_users_page(self):
