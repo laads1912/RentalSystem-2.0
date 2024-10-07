@@ -7,7 +7,6 @@ from controllers.RegistrationController import RegistrationController
 from views.LoginView import LoginView
 from views.RoleSelectionView import RoleSelectionView
 
-
 class LoginController:
     def __init__(self):
         self.view = LoginView(self)
@@ -30,7 +29,6 @@ class LoginController:
         self.view.root.withdraw()
         registration_controller = RegistrationController(self) 
         registration_controller.open_registration() 
-        
 
     def run(self):
         self.view.mainloop()
@@ -42,3 +40,7 @@ class LoginController:
     def employee_page(self):
         employee_home_controller = HomeController(self)
         employee_home_controller.open_employee_home_page()
+
+    def reset_login_fields(self):
+        self.view.email_entry.delete(0, 'end')
+        self.view.password_entry.delete(0, 'end')
