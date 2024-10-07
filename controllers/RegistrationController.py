@@ -27,13 +27,13 @@ class RegistrationController:
         self.view = HomeView(self, email)
         self.view.root.mainloop()
 
-    def update_user(self, email, full_name, age, gender, height, weight, shoe_size, password=None):
+    def update_user(self, email, new_email, full_name, age, gender, height, weight, shoe_size, password=None):
         if password:
             password_hash = hash_password(password)
         else:
             password_hash = None
 
-        User.update_user(email, full_name, age, gender, height, weight, shoe_size, password_hash)
+        User.update_user(email, new_email, full_name, age, gender, height, weight, shoe_size, password_hash)
         print(f'Usuário atualizado com sucesso.')
 
     def back_to_login(self):
