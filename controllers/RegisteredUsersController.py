@@ -2,6 +2,8 @@ from controllers.Utils import hash_password
 from models.User import User
 from views.EmployeeUserEditView import EmployeeUserEditView
 from views.RegisteredUsersView import RegisteredUsersView
+from views.UserEditView import UserEditView
+from views.UserHomeView import UserHomeView
 
 
 class RegisteredUsersController:
@@ -22,6 +24,35 @@ class RegisteredUsersController:
         self.view.root.withdraw()
         self.view = EmployeeUserEditView(self, user)
         self.view.mainloop()
+    
+    def open_user_edit_page(self, email):
+        user = User.get_all_user_data(email)
+        self.view = UserEditView(self, user)  
+        self.view.mainloop()
+    
+    def open_user_home_page(self, email):
+        self.view = UserHomeView(self, email)
+        self.view.root.mainloop(email)
+
+    def log_out(self):
+        from controllers.LoginController import LoginController
+        self.view.root.destroy()
+        login_controller = LoginController()
+        login_controller.run()
+
+    def update_user_as_employee(self, email, new_email, full_name, new_password, password_confirmation, gender, shoe_size, age,
+                    is_employee, weight, height):
+        self.update_user(email, new_email, full_name, new_password, password_confirmation, gender, shoe_size, age,
+                    is_employee, weight, height)
+        self.registered_users_page()
+
+
+    def update_user_as_user(self, email, new_email, full_name, new_password, password_confirmation, gender, shoe_size, age,
+                    is_employee, weight, height):
+        
+        self.update_user(email, new_email, full_name, new_password, password_confirmation, gender, shoe_size, age,
+                    is_employee, weight, height)
+        self.open_user_home_page(email)
 
     def update_user(self, email, new_email, full_name, new_password, password_confirmation, gender, shoe_size, age,
                     is_employee, weight, height):
@@ -61,7 +92,6 @@ class RegisteredUsersController:
         User.update_user(email, new_email, full_name, age, gender, height, weight, shoe_size, new_password_hash, is_employee)
         self.view.show_message("Success", "User updated successfully.")
         self.view.root.withdraw()
-        self.registered_users_page()
 
     def delete_user(self, email):
         User.delete_user(email)
