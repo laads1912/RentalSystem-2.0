@@ -1,8 +1,9 @@
 import customtkinter as ctk
 
 class RoleSelectionView:
-    def __init__(self, controller, user):
+    def __init__(self, controller, email):
         self.controller = controller
+        self.email = email
         self.root = ctk.CTk()
         self.root.title("RENTAL SYSTEM - Role Selection")
         self.root.geometry("1000x700")
@@ -35,10 +36,10 @@ class RoleSelectionView:
     def mainloop(self):
         self.root.mainloop()
     
-    def guest_page(self, user):
+    def guest_page(self):
         self.root.destroy()
-        self.controller.guest_page(user)
+        self.controller.guest_page(self.email)
 
-    def employee_page(self, user):
+    def employee_page(self):
         self.root.destroy()
-        self.controller.employee_page(user)
+        self.controller.employee_page()

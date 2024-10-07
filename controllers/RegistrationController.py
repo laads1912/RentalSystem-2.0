@@ -1,4 +1,4 @@
-import bcrypt
+from controllers.Utils import hash_password
 from models.User import User
 from views.HomeView import HomeView
 from views.UserEditView import UserEditView
@@ -8,11 +8,6 @@ class RegistrationController:
     def __init__(self, login_controller):
         self.login_controller = login_controller
         self.registration_view = RegistrationView(self)
-
-    def hash_password(self, password):
-        salt = bcrypt.gensalt()
-        password_hash = bcrypt.hashpw(password.encode('utf-8'), salt)
-        return password_hash
 
     def add_user(self, email, full_name, age, gender, height, weight, shoe_size, password, confirm_password):
         if not all([email, full_name, age, gender, height, weight, shoe_size, password, confirm_password]):
@@ -43,7 +38,7 @@ class RegistrationController:
             self.registration_view.message_box("Error", "Invalid shoe size.")
             return
 
-        password_hash = self.hash_password(password)
+        password_hash = hash_password(password)
         try:
             User(int(age), email, full_name, gender, int(height), password_hash, int(shoe_size), int(weight)).create_user()
             self.registration_view.message_box("Success", "User registered successfully.")
@@ -65,13 +60,13 @@ class RegistrationController:
         self.view = HomeView(self, email)
         self.view.root.mainloop()
 
-    def update_user(self, email, full_name, age, gender, height, weight, shoe_size, password=None):
+    def update_user(self, email, new_email, full_name, age, gender, height, weight, shoe_size, password=None):
         if password:
-            password_hash = self.hash_password(password)
+            password_hash = hash_password(password)
         else:
-            password_hash = None  
+            password_hash = None
 
-        User.update_user(email, full_name, age, gender, height, weight, shoe_size, password_hash)
+        User.update_user(email, new_email, full_name, age, gender, height, weight, shoe_size, password_hash)
         print(f'User updated successfully.')
 
     def back_to_login(self):

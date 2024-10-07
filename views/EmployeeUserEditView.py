@@ -2,42 +2,34 @@ import customtkinter as ctk
 from tkinter import messagebox
 
 from models.enums import GenderEnum
+from views.common.BaseLayout import create_background, initialize_window
 
 
 class EmployeeUserEditView:
-    def __init__(self, controller):
+    def __init__(self, controller, user):
         self.controller = controller
-        self.root = self.initialize_window()
+        self.root = initialize_window()
 
-        self.full_name_entry = ''
-        self.email_entry = ''
+        self.email = user['email']
+
+        self.full_name_entry = user['full_name']
+        self.email_entry = user['email']
         self.password_entry = ''
         self.password_confirmation_entry = ''
-        self.gender_entry = ''
-        self.us_shoe_size_entry = ''
-        self.age_entry = ''
-        self.is_employee_entry = ''
-        self.weight_entry = ''
-        self.height_entry = ''
+        self.gender_entry = user['gender']
+        self.us_shoe_size_entry = user['shoe_size']
+        self.age_entry = user['age']
+        self.is_employee_entry = user['is_employee']
+        self.weight_entry = user['weight']
+        self.height_entry = user['height']
 
         self.setup_ui()
 
-    def initialize_window(self):
-        root = ctk.CTk()
-        root.title("RENTAL SYSTEM")
-        root.geometry("1000x700")
-        return root
-
     def setup_ui(self):
-        background_frame = self.create_background()
+        background_frame = create_background(self.root)
         self.create_header(background_frame)
         self.create_form_title(background_frame)
         self.create_edit_user_form(background_frame)
-
-    def create_background(self):
-        background_frame = ctk.CTkFrame(self.root, corner_radius=0, fg_color='white')
-        background_frame.place(relwidth=1, relheight=1)
-        return background_frame
 
     def create_header(self, parent):
         header_frame = ctk.CTkFrame(parent, height=50, fg_color='#81c9d8', corner_radius=0)
@@ -59,15 +51,15 @@ class EmployeeUserEditView:
         title_frame.grid_columnconfigure(1, weight=0)
         title_frame.grid_columnconfigure(2, weight=1)
 
-        trash_button = ctk.CTkButton(
+        delete_user_button = ctk.CTkButton(
             title_frame,
-            command=self.trash_button_action,
-            text='',
-            fg_color='#4094a5',
+            command=self.delete_user_action,
+            text='Delete User',
+            fg_color='#535353',
             width=20,
             height=20
         )
-        trash_button.grid(row=0, column=0, padx=(0, 10))
+        delete_user_button.grid(row=0, column=0, padx=(0, 10))
 
         edit_label = ctk.CTkLabel(
             title_frame,
@@ -80,8 +72,8 @@ class EmployeeUserEditView:
         return_button = ctk.CTkButton(
             title_frame,
             command=self.return_button_action,
-            text='',
-            fg_color='#4094a5',
+            text='Return',
+            fg_color='#535353',
             width=20,
             height=20
         )
@@ -91,20 +83,23 @@ class EmployeeUserEditView:
         form_frame = ctk.CTkScrollableFrame(parent, corner_radius=0, fg_color="white", width=400)
         form_frame.pack(fill='y', expand=True)
 
-        self.full_name_entry = self.create_form_field(form_frame, "FULL NAME", 2)
-        self.email_entry = self.create_form_field(form_frame, "EMAIL", 4)
-        self.password_entry = self.create_form_field(form_frame, "PASSWORD", 6, {"show": '*'})
-        self.password_confirmation_entry = self.create_form_field(form_frame, "PASSWORD CONFIRMATION", 8, {"show": '*'})
-        self.gender_entry = self.create_gender_select(form_frame, "GENDER", 10)
-        self.us_shoe_size_entry = self.create_form_field(form_frame, "US SHOE SIZE", 12)
-        self.age_entry = self.create_form_field(form_frame, "AGE", 14)
-        self.is_employee_entry = self.create_radio_buttons(form_frame, "EMPLOYEE", 16)
-        self.weight_entry = self.create_form_field(form_frame, "WEIGHT (KG)", 18)
-        self.height_entry = self.create_form_field(form_frame, "HEIGHT (CM)", 20)
+        self.full_name_entry = self.create_form_field(form_frame, "FULL NAME", 2, self.full_name_entry)
+        self.email_entry = self.create_form_field(form_frame, "EMAIL", 4, self.email_entry)
+        self.password_entry = self.create_form_field(form_frame, "NEW PASSWORD", 6, self.password_entry,
+                                                     entry_options={"show": '*'})
+        self.password_confirmation_entry = self.create_form_field(form_frame, "PASSWORD CONFIRMATION", 8,
+                                                                  self.password_confirmation_entry,
+                                                                  entry_options={"show": '*'})
+        self.gender_entry = self.create_gender_select(form_frame, "GENDER", 10, self.gender_entry)
+        self.us_shoe_size_entry = self.create_form_field(form_frame, "US SHOE SIZE", 12, self.us_shoe_size_entry)
+        self.age_entry = self.create_form_field(form_frame, "AGE", 14, self.age_entry)
+        self.is_employee_entry = self.create_radio_buttons(form_frame, "EMPLOYEE", 16, self.is_employee_entry)
+        self.weight_entry = self.create_form_field(form_frame, "WEIGHT (KG)", 18, self.weight_entry)
+        self.height_entry = self.create_form_field(form_frame, "HEIGHT (CM)", 20, self.height_entry)
 
         self.create_buttons(form_frame)
 
-    def create_form_field(self, parent, label_text, row, entry_options=None):
+    def create_form_field(self, parent, label_text, row, user_value, entry_options=None):
         parent.grid_columnconfigure(0, minsize=120)
         parent.grid_columnconfigure(1, weight=1)
 
@@ -122,6 +117,7 @@ class EmployeeUserEditView:
             **entry_options
         )
         entry.grid(row=row + 1, column=0, columnspan=2, padx=10, pady=(0, 10), sticky='nsew')
+        entry.insert(0, user_value)
 
         return entry
 
@@ -149,29 +145,35 @@ class EmployeeUserEditView:
 
         return entry
 
-    def create_radio_buttons(self, parent, label_text, row, default_value='No'):
+    def create_radio_buttons(self, parent, label_text, row, default_value=0):
         parent.grid_columnconfigure(0, minsize=120)
         parent.grid_columnconfigure(1, weight=1)
 
         employee_label = ctk.CTkLabel(parent, text=label_text, text_color='#8f8e8e')
         employee_label.grid(row=row, column=0, columnspan=2, padx=10, pady=(0, 10), sticky='w')
 
-        entry = ctk.StringVar(value=default_value)
+        radio_value = ctk.StringVar(value=str(default_value))
 
-        ctk.CTkRadioButton(parent, text='Yes', variable=entry, value='Yes', text_color='#8f8e8e').grid(
+        ctk.CTkRadioButton(parent, text='Yes', variable=radio_value, value='1', text_color='#8f8e8e').grid(
             row=row + 1, column=0, padx=(10, 0), pady=(0, 5), sticky='w'
         )
-        ctk.CTkRadioButton(parent, text='No', variable=entry, value='No', text_color='#8f8e8e').grid(
+        ctk.CTkRadioButton(parent, text='No', variable=radio_value, value='0', text_color='#8f8e8e').grid(
             row=row + 1, column=1, padx=(0, 10), pady=(0, 5), sticky='w'
         )
 
-        return entry
+        return radio_value
 
-    def trash_button_action(self):
-        messagebox.showinfo("Info", "Trash button clicked")
+    def delete_user_action(self):
+        confirm = messagebox.askyesno("Confirm Delete",
+                                      "Are you sure you want to delete this user?")
+        if confirm:
+            self.controller.delete_user(self.email)
+        else:
+            self.show_message('Error', "User deletion canceled.")
 
     def return_button_action(self):
-        messagebox.showinfo("Info", "Return button clicked")
+        self.root.withdraw()
+        self.controller.registered_users_page()
 
     def create_buttons(self, parent):
         buttons = [
@@ -186,29 +188,30 @@ class EmployeeUserEditView:
                 font=('Poppins Bold', 13, 'bold'),
                 fg_color='#81c9d8',
                 command=command
-            ).grid(row=22 + i, column=0, columnspan=2, pady=10)
+            ).grid(row=23 + i, column=0, columnspan=2, pady=10)
 
     def rental_historic(self):
         messagebox.showinfo("Info", "Rental History clicked")
 
     def save(self):
-        form_data = {
-            "Full Name": self.full_name_entry.get(),
-            "Email": self.email_entry.get(),
-            "Password": self.password_entry.get(),
-            "Password Confirmation": self.password_confirmation_entry.get(),
-            "Gender": self.gender_entry.get(),
-            "US Shoe Size": self.us_shoe_size_entry.get(),
-            "Age": self.age_entry.get(),
-            "Is Employee": self.is_employee_entry.get(),
-            "Weight": self.weight_entry.get(),
-            "Height": self.height_entry.get(),
-        }
+        full_name = self.full_name_entry.get()
+        new_email = self.email_entry.get()
+        new_password = self.password_entry.get()
+        password_confirmation = self.password_confirmation_entry.get()
+        gender = self.gender_entry.get()
+        us_shoe_size = self.us_shoe_size_entry.get()
+        age = self.age_entry.get()
+        is_employee = self.is_employee_entry.get()
+        weight = self.weight_entry.get()
+        height = self.height_entry.get()
 
-        messagebox.showinfo("Saved Values", "\n".join(f"{key}: {value}" for key, value in form_data.items()))
+        self.controller.update_user(self.email, new_email, full_name, new_password, password_confirmation, gender, int(us_shoe_size), int(age), is_employee, int(weight), int(height))
 
     def working_historic(self):
         messagebox.showinfo("Info", "Working History clicked")
+
+    def show_message(self, title, message):
+        messagebox.showinfo(title, message)
 
     def mainloop(self):
         self.root.mainloop()

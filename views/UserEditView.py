@@ -84,7 +84,7 @@ class UserEditView:
         button_back.grid(row=20, column=0, pady=10)
 
     def update_user(self):
-        email = self.entry_email.get()
+        new_email = self.entry_email.get()
         full_name = self.entry_name.get()
         age = self.entry_age.get()
         gender = self.entry_gender.get().upper()
@@ -94,11 +94,11 @@ class UserEditView:
         password = self.entry_password.get()
         confirm_password = self.entry_confirm_password.get()
 
-        if not all([email, full_name, age, gender, height, weight, shoe_size]):
+        if not all([new_email, full_name, age, gender, height, weight, shoe_size]):
             messagebox.showerror("Erro", "Todos os campos são obrigatórios, exceto senha.")
             return
 
-        if '@' not in email:
+        if '@' not in new_email:
             messagebox.showerror("Erro", "E-mail inválido. Certifique-se de que o e-mail contém '@'.")
             return
 
@@ -112,7 +112,7 @@ class UserEditView:
                 return
 
         try:
-            self.controller.update_user(email, full_name, int(age), gender, int(height), int(weight), int(shoe_size), password)
+            self.controller.update_user(self.user['email'], new_email, full_name, int(age), gender, int(height), int(weight), int(shoe_size), password)
             messagebox.showinfo("Sucesso", "Usuário atualizado com sucesso!")
             self.controller.back_to_login()
         except Exception as e:
