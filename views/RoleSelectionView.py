@@ -31,6 +31,7 @@ class RoleSelectionView:
 
     def back_to_login(self):
         self.root.destroy()
+        self.controller.reset_login_fields()
         self.controller.view.root.deiconify()
 
     def mainloop(self):

@@ -4,7 +4,7 @@ from tkinter import messagebox
 from models.enums import GenderEnum
 from views.common.BaseLayout import create_background, initialize_window
 
-class UserEditView:
+class GuestEditView:
     def __init__(self, controller, user):
         self.controller = controller
         self.root = initialize_window()
@@ -82,7 +82,7 @@ class UserEditView:
 
     def create_form_field(self, parent, label_text, row, user_value, entry_options=None):
         ctk.CTkLabel(parent, text=label_text, font=('DM Sans', 10), text_color='#8f8e8e').grid(
-            row=row, column=0, sticky='w', pady=(5, 2), padx=(20, 0)  # Adicionando padding horizontal para centralizar melhor
+            row=row, column=0, sticky='w', pady=(5, 2), padx=(20, 0) 
         )
 
         entry_options = entry_options or {}
@@ -151,7 +151,7 @@ class UserEditView:
         weight = self.weight_entry.get()
         height = self.height_entry.get()
 
-        self.controller.update_user_as_user(self.email, new_email, full_name, new_password, password_confirmation, gender, int(us_shoe_size), int(age), self.is_employee, int(weight), int(height))
+        self.controller.update_user_as_guest(self.email, new_email, full_name, new_password, password_confirmation, gender, int(us_shoe_size), int(age), self.is_employee, int(weight), int(height))
 
     def show_message(self, title, message):
         messagebox.showinfo(title, message)
